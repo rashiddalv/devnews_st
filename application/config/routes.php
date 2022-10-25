@@ -64,8 +64,10 @@ $route['category']           = 'UserController/category';
 // ====================== Admin Start =======================================
 
 $route['login_dashboard']  = 'AdminController/index';
+$route['register']         = 'AdminController/register';
 $route['login_act']        = 'AdminController/login_act';
 $route['log_out']          = 'AdminController/log_out';
+$route['register_act']     = 'AdminController/register_act';
 
 $route['admin_dashboard']  = 'AdminController/dashboard';
 $route['admin_news']       = 'AdminController/news';

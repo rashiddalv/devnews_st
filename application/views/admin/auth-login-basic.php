@@ -121,7 +121,7 @@
               </div>
 
 
-              
+
               <?php if ($this->session->flashdata('err')) { ?>
                 <div class="alert alert-danger d-flex align-items-center" role="alert">
                   <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:">
@@ -133,7 +133,7 @@
                 </div>
 
               <?php } ?>
-              
+
               <?php if ($this->session->flashdata('success')) { ?>
                 <div class="alert alert-success d-flex align-items-center" role="alert">
                   <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:">
@@ -149,6 +149,12 @@
 
 
             </form>
+            <p class="text-center">
+              <span>Platformamıza təzə gəlmisən? </span>
+              <a href="<?php echo base_url('register') ?>">
+                <span>Hesab yarat</span>
+              </a>
+            </p>
 
 
           </div>

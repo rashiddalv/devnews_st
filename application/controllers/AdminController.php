@@ -9,6 +9,32 @@ class AdminController extends CI_Controller
     {
         $this->load->view('admin/auth-login-basic');
     }
+    public function register()
+    {
+        $this->load->view('admin/auth-register-basic');
+    }
+    public function register_act()
+    {
+        $name =  $_POST['reg-username'];
+        $email =  $_POST['reg-email'];
+        $pass = $_POST['reg-password'];
+        $terms = $_POST['terms'];
+
+        if (!empty($name) && !empty($email) && !empty($pass) && $terms == 0){
+            $data = [
+                'a_name' => $name,
+                'a_mail' => $email,
+                'a_password' => md5($pass),
+            ];
+            $this->db->insert('admin', $data);
+            $this->session->set_flashdata('success', 'Hesab uğurla yaradıldı.');
+            redirect($_SERVER['HTTP_REFERER']);
+
+        } else {
+            $this->session->set_flashdata('err', 'Bütün sahələri doldurun.');
+            redirect($_SERVER['HTTP_REFERER']);
+        }
+    }
     public function login_act()
     {
         $email =  $_POST['email'];
@@ -35,7 +61,8 @@ class AdminController extends CI_Controller
             redirect($_SERVER['HTTP_REFERER']);
         }
     }
-    public function log_out(){
+    public function log_out()
+    {
         $this->session->set_flashdata('success', 'Tezliklə qayıdın!');
         unset($_SESSION['admin_login_id']);
         redirect(base_url('login_dashboard'));
