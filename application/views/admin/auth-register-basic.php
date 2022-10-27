@@ -159,7 +159,7 @@
 
                 <div class="mb-3">
                   <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="terms-conditions" name="terms" />
+                    <input class="form-check-input" type="checkbox" id="terms-conditions" name="reg-terms" value="Yes"/>
                     <label class="form-check-label" for="terms-conditions">
                     Mən
                       <a href="javascript:void(0);">məxfilik siyasəti və şərtləri</a> ilə razıyam

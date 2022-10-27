@@ -15,21 +15,64 @@ class AdminController extends CI_Controller
     }
     public function register_act()
     {
+        $this->load->helper(array('form', 'url'));
+        $this->load->library('form_validation');
         $name =  $_POST['reg-username'];
         $email =  $_POST['reg-email'];
         $pass = $_POST['reg-password'];
-        $terms = $_POST['terms'];
+        $terms = $_POST['reg-terms'];
 
-        if (!empty($name) && !empty($email) && !empty($pass) && $terms == 0){
-            $data = [
-                'a_name' => $name,
-                'a_mail' => $email,
-                'a_password' => md5($pass),
-            ];
-            $this->db->insert('admin', $data);
-            $this->session->set_flashdata('success', 'Hesab uğurla yaradıldı.');
-            redirect($_SERVER['HTTP_REFERER']);
+        if (!empty($name) && !empty($email) && !empty($pass) && isset($terms) && $terms == 'Yes') {
+            if (preg_match('~^\p{Lu}~u', $name)) {
 
+                $this->form_validation->set_rules('reg-email', 'Email', 'trim|required|valid_email');
+                if ($this->form_validation->run() == TRUE) {
+                    if (strlen($pass) >= 6) {
+
+
+
+
+
+//==========================================================CHECK EMAIL REPEAT (DOESNT WORK)====================================================
+
+                        $check_email = "SELECT * FROM admin WHERE a_mail LIKE '%".$name."%'"; 
+                        $result = $this->db->$check_email;
+                        if ($result->num_rows == 0) {
+                            $data = [
+                                'a_name' => $name,
+                                'a_mail' => $email,
+                                'a_password' => md5($pass)
+                            ];
+                            $this->db->insert('admin', $data);
+                            $this->session->set_flashdata('success', 'Hesab uğurla yaradıldı.');
+                            redirect($_SERVER['HTTP_REFERER']);
+                        } else {
+                            $this->session->set_flashdata('err', 'Daxil etdiyiniz e-poçt məşğuldur.');
+                            redirect($_SERVER['HTTP_REFERER']);
+                        }
+
+//==========================================================CHECK EMAIL REPEAT (DOESNT WORK)====================================================
+
+
+
+
+
+
+
+
+
+                    } else {
+                        $this->session->set_flashdata('err', 'Şifrənin uzunluğu ən azı 6 olmalıdır.');
+                        redirect($_SERVER['HTTP_REFERER']);
+                    }
+                } else {
+                    $this->session->set_flashdata('err', 'Həqiqi e-poçtu daxil edin.');
+                    redirect($_SERVER['HTTP_REFERER']);
+                }
+            } else {
+                $this->session->set_flashdata('err', 'Ad böyük hərflə başlamalıdır.');
+                redirect($_SERVER['HTTP_REFERER']);
+            }
         } else {
             $this->session->set_flashdata('err', 'Bütün sahələri doldurun.');
             redirect($_SERVER['HTTP_REFERER']);
@@ -48,6 +91,7 @@ class AdminController extends CI_Controller
             // print_r('<pre>');
             // print_r($data);
             // die();
+
             $check_admin = $this->db->where($data)->get('admin')->row_array();
             if ($check_admin) {
                 $_SESSION['admin_login_id'] = $check_admin['a_id'];
