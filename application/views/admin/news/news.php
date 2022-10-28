@@ -16,7 +16,7 @@
             </a>
         </h5>
 
-        
+
         <div class="card-body">
             <?php if ($this->session->flashdata('success')) { ?>
                 <div class="alert alert-success d-flex align-items-center" role="alert">
@@ -27,7 +27,7 @@
                         <?php echo $this->session->flashdata('success'); ?>
                     </div>
                 </div>
-    
+
             <?php } ?>
             <div class="table-responsive text-nowrap">
                 <table class="table table-bordered">
@@ -44,67 +44,36 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>
-                                Php Lesson
-                            </td>
-                            <td>10.01.2022</td>
-                            <td>Education</td>
-                            <td>Rashid</td>
-                            <td>
-                                <img src="" alt="">
-                            </td>
-                            <td>
-                                <span class="badge bg-label-success me-1">Active</span>
-                            </td>
-                            <td>
-                                <button type="button" class="btn btn-sm btn-outline-info">Detail</button>
-                                <button type="button" class="btn btn-sm btn-outline-warning">Edit</button>
-                                <button type="button" class="btn btn-sm btn-outline-danger">Delete</button>
-                            </td>
-                        </tr>
+                        <?php foreach ($get_all_news as $item) { ?>
+                            <tr>
+                                <td><?php echo $item['n_title'] ?></td>
+                                <td><?php echo date("d.m.Y", strtotime($item['n_date'])); ?></td>
+                                <td><?php echo $item['n_category'] ?></td>
+                                <td><?php echo $item['a_name'] ?></td>
+                                <td>
+                                    <img src="" alt="">
+                                </td>
+                                <td>
+                                    <?php if ($item['n_status'] == "Active") { ?>
+                                        <span class="badge bg-label-success me-1"><?php echo $item['n_status'] ?></span>
 
-                        <tr>
-                            <td>
-                                Php Lesson2
-                            </td>
-                            <td>10.01.2022</td>
-                            <td>Education</td>
-                            <td>Rashid</td>
-                            <td>
-                                <img src="" alt="">
-                            </td>
+                                    <?php   } else if ($item['n_status'] == "Deactive") { ?>
+                                        <span class="badge bg-label-danger me-1"><?php echo $item['n_status'] ?></span>
 
-                            <td>
-                                <span class="badge bg-label-danger me-1">Deactive</span>
-                            </td>
-                            <td>
-                                <button type="button" class="btn btn-sm btn-outline-info">Detail</button>
-                                <button type="button" class="btn btn-sm btn-outline-warning">Edit</button>
-                                <button type="button" class="btn btn-sm btn-outline-danger">Delete</button>
-                            </td>
-                        </tr>
+                                    <?php } else { ?>
+                                        <span class="badge bg-label-primary me-1">error</span>
+                                    <?php } ?>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-sm btn-outline-info">Detail</button>
+                                    <button type="button" class="btn btn-sm btn-outline-warning">Edit</button>
+                                    <button type="button" class="btn btn-sm btn-outline-danger">Delete</button>
+                                </td>
+                            </tr>
+                        <?php } ?>
 
-                        <tr>
-                            <td>
-                                Php Lesson3
-                            </td>
-                            <td>10.01.2022</td>
-                            <td>Education</td>
-                            <td>Rashid</td>
-                            <td>
-                                <img src="" alt="">
-                            </td>
 
-                            <td>
-                                <span class="badge bg-label-success me-1">Active</span>
-                            </td>
-                            <td>
-                                <button type="button" class="btn btn-sm btn-outline-info">Detail</button>
-                                <button type="button" class="btn btn-sm btn-outline-warning">Edit</button>
-                                <button type="button" class="btn btn-sm btn-outline-danger">Delete</button>
-                            </td>
-                        </tr>
+
 
 
                     </tbody>

@@ -143,6 +143,8 @@ class AdminController extends CI_Controller
         $data['admin'] = $this->db->where('a_id', $_SESSION['admin_login_id'])->get('admin')->row_array();
         $this->load->view('admin/index', $data);
     }
+    //=======================Forgot Password=======================
+    //=======================DOESNT WORK=======================
     public function pass_forgot(){
         $this->load->view('admin/auth-forgot-password-basic');
     }
@@ -151,11 +153,18 @@ class AdminController extends CI_Controller
         $oldpass = $_POST['oldpass'];
         $newpass = $_POST['newpass'];
     }
+    //=======================DOESNT WORK=======================
+    //=======================Forgot Password=======================
+
 
     // ================================NEWS STARTS========================================
     public function news()
     {
-        $this->load->view('admin/news/news');
+        $data['get_all_news'] = $this->db
+        ->order_by('n_id', 'DESC')
+        ->join('admin', 'admin.a_id = news.n_creator_id', 'left')
+        ->get('news')->result_array();
+        $this->load->view('admin/news/news',$data);
     }
     public function news_create()
     {
