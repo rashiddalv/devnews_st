@@ -2,8 +2,6 @@
 <?php
 class AdminController extends CI_Controller
 {
-
-
     public function index()
     {
         $this->load->view('admin/auth-login-basic');
@@ -90,6 +88,25 @@ class AdminController extends CI_Controller
     }
     public function login_act()
     {
+        //============================REMEMBER ME============================
+        $this->load->helper("cookie");
+
+        $autoLogin = $this->input->post("autologin", true);
+
+        if ($autoLogin == 1) {
+            $cookie = array(
+                'name'   => 'autologin',
+                'value'  => '1',
+                'expire' => '31536000',
+                'path'   => '/'
+            );
+            $this->input->set_cookie($cookie);
+        } else {
+            delete_cookie("autologin");
+        }
+        //============================REMEMBER ME============================
+
+
         $email =  $_POST['email'];
         $pass = $_POST['password'];
 
@@ -126,8 +143,56 @@ class AdminController extends CI_Controller
         $data['admin'] = $this->db->where('a_id', $_SESSION['admin_login_id'])->get('admin')->row_array();
         $this->load->view('admin/index', $data);
     }
+    public function pass_forgot(){
+        $this->load->view('admin/auth-forgot-password-basic');
+    }
+    public function pass_forgot_act(){
+        $email =  $_POST['email'];
+        $oldpass = $_POST['oldpass'];
+        $newpass = $_POST['newpass'];
+    }
+
+    // ================================NEWS STARTS========================================
     public function news()
     {
         $this->load->view('admin/news/news');
     }
+    public function news_create()
+    {
+        $this->load->view('admin/news/create');
+    }
+    public function news_create_act()
+    {
+        $title         = $_POST['title'];
+        $description   = $_POST['description'];
+        $date          = $_POST['date'];
+        $category      = $_POST['category'];
+        $status        = $_POST['status'];
+
+        if (!empty($title) && !empty($description) && !empty($date) && !empty($category) && !empty($status)) {
+            $data = [
+                'n_title'       => $title,
+                'n_description' => $description,
+                'n_date'        => $date,
+                'n_category'    => $category,
+                'n_status'      => $status,
+                // 'n_img'      => '',
+                'n_creator_id'  => $_SESSION['admin_login_id'],
+                'n_create_date' => date("Y-m-d H:i:s")
+            ];
+
+            $this->db->insert('news', $data);
+            $this->session->set_flashdata('success', 'Xəbər uğurla yaradıldı.');
+            redirect(base_url('admin_news'));
+        } else {
+            $this->session->set_flashdata('err', 'Bütün sahələri doldurun.');
+            redirect($_SERVER['HTTP_REFERER']);
+        }
+    }
+
+
+
+
+    // ================================NEWS ENDS==========================================
+
 }

@@ -63,14 +63,20 @@ $route['category']           = 'UserController/category';
 
 // ====================== Admin Start =======================================
 
-$route['login_dashboard']  = 'AdminController/index';
-$route['register']         = 'AdminController/register';
-$route['login_act']        = 'AdminController/login_act';
-$route['log_out']          = 'AdminController/log_out';
-$route['register_act']     = 'AdminController/register_act';
+$route['login_dashboard']                       = 'AdminController/index';
+$route['register']                              = 'AdminController/register';
+$route['login_act']                             = 'AdminController/login_act';
+$route['log_out']                               = 'AdminController/log_out';
+$route['register_act']                          = 'AdminController/register_act';
 
-$route['admin_dashboard']  = 'AdminController/dashboard';
-$route['admin_news']       = 'AdminController/news';
+$route['admin_dashboard']                       = 'AdminController/dashboard';
+$route['admin_news']                            = 'AdminController/news';
+$route['admin_news_create']                     = 'AdminController/news_create';
+$route['admin_news_create_act']                 = 'AdminController/news_create_act';
+
+
+$route['pass_forgot']                           = 'AdminController/pass_forgot';
+$route['pass_forgot_act']                       = 'AdminController/pass_forgot_act';
 
 
 // ====================== Admin End   =======================================
