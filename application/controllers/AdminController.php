@@ -1,6 +1,5 @@
 
 <?php
-
 class AdminController extends CI_Controller
 {
 
@@ -27,17 +26,28 @@ class AdminController extends CI_Controller
 
                 $this->form_validation->set_rules('reg-email', 'Email', 'trim|required|valid_email');
                 if ($this->form_validation->run() == TRUE) {
-                    if (strlen($pass) >= 6) {
+                    if (strlen($pass) >= 6 && strlen($pass) <= 15) {
 
 
 
 
 
-//==========================================================CHECK EMAIL REPEAT (DOESNT WORK)====================================================
+                        //==========================================================CHECK EMAIL REPEAT (WORK)====================================================
 
-                        $check_email = "SELECT * FROM admin WHERE a_mail LIKE '%".$name."%'"; 
-                        $result = $this->db->$check_email;
-                        if ($result->num_rows == 0) {
+                        // $check_email = "SELECT * FROM admin WHERE a_mail LIKE '%".$name."%'"; 
+                        // $result = $this->db->$check_email;
+                        // if ($result->num_rows == 0) {
+                        // } else {
+                        //     $this->session->set_flashdata('err', 'Daxil etdiyiniz e-poçt məşğuldur.');
+                        //     redirect($_SERVER['HTTP_REFERER']);
+                        // }
+
+
+                        $checkEmailDublicate = $this->db->where("a_mail", $email)->get("admin")->row_array();
+                        if ($checkEmailDublicate) {
+                            $this->session->set_flashdata('err', 'Daxil etdiyiniz e-poçt məşğuldur.');
+                            redirect($_SERVER['HTTP_REFERER']);
+                        } else {
                             $data = [
                                 'a_name' => $name,
                                 'a_mail' => $email,
@@ -46,12 +56,12 @@ class AdminController extends CI_Controller
                             $this->db->insert('admin', $data);
                             $this->session->set_flashdata('success', 'Hesab uğurla yaradıldı.');
                             redirect($_SERVER['HTTP_REFERER']);
-                        } else {
-                            $this->session->set_flashdata('err', 'Daxil etdiyiniz e-poçt məşğuldur.');
-                            redirect($_SERVER['HTTP_REFERER']);
                         }
 
-//==========================================================CHECK EMAIL REPEAT (DOESNT WORK)====================================================
+
+
+
+                        //==========================================================CHECK EMAIL REPEAT (WORK)====================================================
 
 
 
