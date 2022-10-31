@@ -145,10 +145,12 @@ class AdminController extends CI_Controller
     }
     //=======================Forgot Password=======================
     //=======================DOESNT WORK=======================
-    public function pass_forgot(){
+    public function pass_forgot()
+    {
         $this->load->view('admin/auth-forgot-password-basic');
     }
-    public function pass_forgot_act(){
+    public function pass_forgot_act()
+    {
         $email =  $_POST['email'];
         $oldpass = $_POST['oldpass'];
         $newpass = $_POST['newpass'];
@@ -160,15 +162,18 @@ class AdminController extends CI_Controller
     // ================================NEWS STARTS========================================
     public function news()
     {
+
+        $data['admin'] = $this->db->where('a_id', $_SESSION['admin_login_id'])->get('admin')->row_array();
         $data['get_all_news'] = $this->db
-        ->order_by('n_id', 'DESC')
-        ->join('admin', 'admin.a_id = news.n_creator_id', 'left')
-        ->get('news')->result_array();
-        $this->load->view('admin/news/news',$data);
+            ->order_by('n_id', 'DESC')
+            ->join('admin', 'admin.a_id = news.n_creator_id', 'left')
+            ->get('news')->result_array();
+        $this->load->view('admin/news/news', $data);
     }
     public function news_create()
     {
-        $this->load->view('admin/news/create');
+        $data['admin'] = $this->db->where('a_id', $_SESSION['admin_login_id'])->get('admin')->row_array();
+        $this->load->view('admin/news/create', $data);
     }
     public function news_create_act()
     {
@@ -179,29 +184,84 @@ class AdminController extends CI_Controller
         $status        = $_POST['status'];
 
         if (!empty($title) && !empty($description) && !empty($date) && !empty($category) && !empty($status)) {
-            $data = [
-                'n_title'       => $title,
-                'n_description' => $description,
-                'n_date'        => $date,
-                'n_category'    => $category,
-                'n_status'      => $status,
-                // 'n_img'      => '',
-                'n_creator_id'  => $_SESSION['admin_login_id'],
-                'n_create_date' => date("Y-m-d H:i:s")
-            ];
 
-            $this->db->insert('news', $data);
-            $this->session->set_flashdata('success', 'Xəbər uğurla yaradıldı.');
-            redirect(base_url('admin_news'));
+
+
+            $config['upload_path']          = './uploads/news/';
+            $config['allowed_types']        = 'jpg|png|jpeg';
+            $config['encrypt_name']        = TRUE;
+            // $config['max_size']             = 100;
+            // $config['max_width']            = 1024;
+            // $config['max_height']           = 768;
+            $this->load->library('upload', $config);
+            $this->upload->initialize($config);
+
+            if ($this->upload->do_upload('news_img')) {
+                $file_name = $this->upload->data('file_name');
+                $file_ext = $this->upload->data('file_ext');
+
+
+                $data = [
+                    'n_title'       => $title,
+                    'n_description' => $description,
+                    'n_date'        => $date,
+                    'n_category'    => $category,
+                    'n_status'      => $status,
+                    'n_img'         => $file_name,
+                    'n_file_ext'    => $file_ext,
+                    'n_creator_id'  => $_SESSION['admin_login_id'],
+                    'n_create_date' => date("Y-m-d H:i:s")
+                ];
+                $this->db->insert('news', $data);
+                $this->session->set_flashdata('success', 'Xəbər uğurla yaradıldı.');
+                redirect(base_url('admin_news'));
+            } else {
+                $this->session->set_flashdata('err', 'Şəkil uyğun deyil.');
+                redirect($_SERVER['HTTP_REFERER']);
+            }
         } else {
             $this->session->set_flashdata('err', 'Bütün sahələri doldurun.');
             redirect($_SERVER['HTTP_REFERER']);
         }
     }
 
-
-
+    public function news_delete($id)
+    {
+        $this->db->where('n_id', $id)->delete('news');
+        $this->session->set_flashdata('success', 'Xəbər uğurla silindi.');
+        redirect($_SERVER['HTTP_REFERER']);
+    }
 
     // ================================NEWS ENDS==========================================
 
+    public function admin_settings()
+    {
+        $data['admin'] = $this->db->where('a_id', $_SESSION['admin_login_id'])->get('admin')->row_array();
+        $this->load->view('admin/settings', $data);
+    }
+    public function admin_settings_act()
+    {
+        // $profile_pic =  $_POST['profile_pic'];
+        $config['upload_path']          = './uploads/admin/';
+        $config['allowed_types']        = 'jpg|png|jpeg';
+        $config['encrypt_name']         = TRUE;
+        // $config['max_size']          = 100;
+        // $config['max_width']         = 1024;
+        // $config['max_height']        = 768;
+        $this->load->library('upload', $config);
+        $this->upload->initialize($config);
+
+        if ($this->upload->do_upload('profile_pic')) {
+            $file_name = $this->upload->data('file_name');
+            $data = [
+                'a_img' => $file_name,
+            ];
+            $this->db->where('a_id', $_SESSION['admin_login_id'])->update('admin', $data);
+            $this->session->set_flashdata('success', 'Profil şəkli uğurla yeniləndi.');
+            redirect($_SERVER['HTTP_REFERER']);
+        } else {
+            $this->session->set_flashdata('err', 'Şəkil uyğun deyil.');
+            redirect($_SERVER['HTTP_REFERER']);
+        }
+    }
 }

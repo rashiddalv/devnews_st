@@ -33,25 +33,38 @@
                 <table class="table table-bordered">
                     <thead>
                         <tr>
-                            <th>Title</th>
+                            <th>Başlıq</th>
                             <!-- <th>Description</th> -->
-                            <th>Date</th>
-                            <th>Category</th>
-                            <th>Creator name</th>
-                            <th>Image</th>
-                            <th>Status</th>
-                            <th>Actions</th>
+                            <th>Təsvir</th>
+                            <th>Kateqoriya</th>
+                            <th>Yaradıcının adı</th>
+                            <th>Şəkil</th>
+                            <th>Vəziyyət</th>
+                            <th>Parametrlər</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php foreach ($get_all_news as $item) { ?>
                             <tr>
-                                <td><?php echo $item['n_title'] ?></td>
+                                <td><?php 
+                                //Trimming text to a specific length
+                                $title = substr($item['n_title'], 0, 30);
+                                //Then make sure the text doesn't end with an exclamation mark, comma, period, or dash
+                                $title = rtrim($title, "!,.-");
+                                //Finally, we find the last space, eliminate it and put "..."
+                                $title = substr($title, 0, strrpos($title, ' '));
+                                echo $title."..." ?></td>
+
+
                                 <td><?php echo date("d.m.Y", strtotime($item['n_date'])); ?></td>
                                 <td><?php echo $item['n_category'] ?></td>
                                 <td><?php echo $item['a_name'] ?></td>
                                 <td>
-                                    <img src="" alt="">
+                                    <?php if ($item['n_img']) { ?>
+                                        <img width="70" height="70" style="object-fit: cover;" src="<?php echo base_url('uploads/news/' . $item['n_img']) ?> " alt="">
+                                    <?php } else { ?>
+                                        <img width="70" height="70" style="object-fit: cover;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png" alt="">
+                                    <?php } ?>
                                 </td>
                                 <td>
                                     <?php if ($item['n_status'] == "Active") { ?>
@@ -67,7 +80,9 @@
                                 <td>
                                     <button type="button" class="btn btn-sm btn-outline-info">Detail</button>
                                     <button type="button" class="btn btn-sm btn-outline-warning">Edit</button>
-                                    <button type="button" class="btn btn-sm btn-outline-danger">Delete</button>
+                                    <a href="<?php echo base_url('admin_news_delete/' . $item['n_id']); ?>">
+                                        <button onclick="return confirm('Xəbəri silmək istədiyinizə əminsiniz?')" type="button" class="btn btn-sm btn-outline-danger">Delete</button>
+                                    </a>
                                 </td>
                             </tr>
                         <?php } ?>

@@ -10,7 +10,7 @@
         <div class="navbar-nav align-items-center">
             <div class="nav-item d-flex align-items-center">
                 <i class="bx bx-search fs-4 lh-0"></i>
-                <input type="text" class="form-control border-0 shadow-none" placeholder="Search..." aria-label="Search..." />
+                <input type="text" class="form-control border-0 shadow-none" placeholder="Axtar..." aria-label="Search..." />
             </div>
         </div>
         <!-- /Search -->
@@ -20,7 +20,7 @@
             <li class="nav-item navbar-dropdown dropdown-user dropdown">
                 <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
                     <div class="avatar avatar-online">
-                        <img src="<?php echo base_url("assets/admin/"); ?>assets/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" />
+                        <img src="<?php echo base_url('uploads/admin/' . $admin['a_img']) ?>" alt class="w-px-40 h-auto rounded-circle" />
                     </div>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end">
@@ -29,12 +29,12 @@
                             <div class="d-flex">
                                 <div class="flex-shrink-0 me-3">
                                     <div class="avatar avatar-online">
-                                        <img src="<?php echo base_url("assets/admin/"); ?>assets/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" />
+                                        <img src="<?php echo base_url('uploads/admin/' . $admin['a_img']) ?>" alt class="w-px-40 h-auto rounded-circle" />
                                     </div>
                                 </div>
                                 <div class="flex-grow-1">
-                                    <span class="fw-semibold d-block">Name</span>
-                                    <small class="text-muted">Admin</small>
+                                    <span class="fw-semibold d-block"><?php echo $admin['a_name']; ?></span>
+                                    <small class="text-muted"><?php echo $admin['a_category']; ?></small>
                                 </div>
                             </div>
                         </a>
@@ -45,13 +45,13 @@
                     <li>
                         <a class="dropdown-item" href="#">
                             <i class="bx bx-user me-2"></i>
-                            <span class="align-middle">My Profile</span>
+                            <span class="align-middle">Mənim Hesabım</span>
                         </a>
                     </li>
                     <li>
-                        <a class="dropdown-item" href="#">
+                        <a class="dropdown-item" href="<?php echo base_url('admin_settings') ?> ">
                             <i class="bx bx-cog me-2"></i>
-                            <span class="align-middle">Settings</span>
+                            <span class="align-middle">Parametrlər</span>
                         </a>
                     </li>
                     <li>
@@ -60,7 +60,7 @@
                     <li>
                         <a class="dropdown-item" href="<?php echo base_url('log_out'); ?>">
                             <i class="bx bx-power-off me-2"></i>
-                            <span class="align-middle">Log Out</span>
+                            <span class="align-middle">Çıxış</span>
                         </a>
                     </li>
                 </ul>

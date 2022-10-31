@@ -65,6 +65,8 @@ $route['category']           = 'UserController/category';
 
 $route['login_dashboard']                       = 'AdminController/index';
 $route['register']                              = 'AdminController/register';
+$route['admin_settings']                        = 'AdminController/admin_settings';
+$route['admin_settings_act']                    = 'AdminController/admin_settings_act';
 $route['login_act']                             = 'AdminController/login_act';
 $route['log_out']                               = 'AdminController/log_out';
 $route['register_act']                          = 'AdminController/register_act';
@@ -73,6 +75,7 @@ $route['admin_dashboard']                       = 'AdminController/dashboard';
 $route['admin_news']                            = 'AdminController/news';
 $route['admin_news_create']                     = 'AdminController/news_create';
 $route['admin_news_create_act']                 = 'AdminController/news_create_act';
+$route['admin_news_delete/(.*)']                = 'AdminController/news_delete/$1';
 
 
 $route['pass_forgot']                           = 'AdminController/pass_forgot';
