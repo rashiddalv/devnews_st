@@ -33,6 +33,7 @@
                 <table class="table table-bordered">
                     <thead>
                         <tr>
+                            <th>#</th>
                             <th>Başlıq</th>
                             <!-- <th>Description</th> -->
                             <th>Təsvir</th>
@@ -44,18 +45,17 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($get_all_news as $item) { ?>
+                        <?php $news_amount = 0; foreach ($get_all_news as $item) { $news_amount++?>
                             <tr>
-                                <td><?php 
-                                //Trimming text to a specific length
-                                $title = substr($item['n_title'], 0, 30);
-                                //Then make sure the text doesn't end with an exclamation mark, comma, period, or dash
-                                $title = rtrim($title, "!,.-");
-                                //Finally, we find the last space, eliminate it and put "..."
-                                $title = substr($title, 0, strrpos($title, ' '));
-                                echo $title."..." ?></td>
-
-
+                                <td><?php echo $news_amount; ?></td>
+                                <td><?php
+                                    //Trimming text to a specific length
+                                    $title = substr($item['n_title'], 0, 30);
+                                    // //Then make sure the text doesn't end with an exclamation mark, comma, period, or dash
+                                    // $title = rtrim($title, "!,.-");
+                                    // //Finally, we find the last space, eliminate it and put "..."
+                                    // $title = substr($title, 0, strrpos($title, ' '));
+                                    echo $title . "..." ?></td>
                                 <td><?php echo date("d.m.Y", strtotime($item['n_date'])); ?></td>
                                 <td><?php echo $item['n_category'] ?></td>
                                 <td><?php echo $item['a_name'] ?></td>

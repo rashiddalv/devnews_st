@@ -2,6 +2,13 @@
 <?php
 class AdminController extends CI_Controller
 {
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->load->model('News_model');
+    }
+
     public function index()
     {
         $this->load->view('admin/auth-login-basic');
@@ -164,10 +171,7 @@ class AdminController extends CI_Controller
     {
 
         $data['admin'] = $this->db->where('a_id', $_SESSION['admin_login_id'])->get('admin')->row_array();
-        $data['get_all_news'] = $this->db
-            ->order_by('n_id', 'DESC')
-            ->join('admin', 'admin.a_id = news.n_creator_id', 'left')
-            ->get('news')->result_array();
+        $data['get_all_news'] = $this->News_model->get_all_news();
         $this->load->view('admin/news/news', $data);
     }
     public function news_create()
@@ -212,7 +216,7 @@ class AdminController extends CI_Controller
                     'n_creator_id'  => $_SESSION['admin_login_id'],
                     'n_create_date' => date("Y-m-d H:i:s")
                 ];
-                $this->db->insert('news', $data);
+                $this->News_model->insert_news($data);
                 $this->session->set_flashdata('success', 'Xəbər uğurla yaradıldı.');
                 redirect(base_url('admin_news'));
             } else {
@@ -227,7 +231,7 @@ class AdminController extends CI_Controller
 
     public function news_delete($id)
     {
-        $this->db->where('n_id', $id)->delete('news');
+        $this->News_model->delete_news($id);
         $this->session->set_flashdata('success', 'Xəbər uğurla silindi.');
         redirect($_SERVER['HTTP_REFERER']);
     }
