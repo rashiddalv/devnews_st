@@ -220,8 +220,18 @@ class AdminController extends CI_Controller
                 $this->session->set_flashdata('success', 'Xəbər uğurla yaradıldı.');
                 redirect(base_url('admin_news'));
             } else {
-                $this->session->set_flashdata('err', 'Şəkil uyğun deyil.');
-                redirect($_SERVER['HTTP_REFERER']);
+                $data = [
+                    'n_title'       => $title,
+                    'n_description' => $description,
+                    'n_date'        => $date,
+                    'n_category'    => $category,
+                    'n_status'      => $status,
+                    'n_creator_id'  => $_SESSION['admin_login_id'],
+                    'n_create_date' => date("Y-m-d H:i:s")
+                ];
+                $this->News_model->insert_news($data);
+                $this->session->set_flashdata('success', 'Xəbər uğurla yaradıldı.');
+                redirect(base_url('admin_news'));
             }
         } else {
             $this->session->set_flashdata('err', 'Bütün sahələri doldurun.');
@@ -267,5 +277,23 @@ class AdminController extends CI_Controller
             $this->session->set_flashdata('err', 'Şəkil uyğun deyil.');
             redirect($_SERVER['HTTP_REFERER']);
         }
+    }
+    public function news_detail($id)
+    {
+        $data['admin'] = $this->db->where('a_id', $_SESSION['admin_login_id'])->get('admin')->row_array();
+        $data['single_news'] = $this->News_model->get_single_news($id);
+        // print_r('<pre>');
+        // print_r($data['single_news']);
+        // die();
+        $this->load->view('admin/news/detail', $data);
+    }
+    public function news_update($id)
+    {
+        $data['admin'] = $this->db->where('a_id', $_SESSION['admin_login_id'])->get('admin')->row_array();
+        $data['update_news'] = $this->News_model->update_news($id);
+        // print_r('<pre>');
+        // print_r($data['update_news']);
+        // die();
+        $this->load->view('admin/news/update', $data);
     }
 }

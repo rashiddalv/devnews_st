@@ -45,17 +45,20 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <?php $news_amount = 0; foreach ($get_all_news as $item) { $news_amount++?>
+                        <?php $news_amount = 0;
+                        foreach ($get_all_news as $item) {
+                            $news_amount++ ?>
                             <tr>
                                 <td><?php echo $news_amount; ?></td>
                                 <td><?php
                                     //Trimming text to a specific length
-                                    $title = substr($item['n_title'], 0, 30);
+                                    // $title = substr($item['n_title'], 0, 30);
                                     // //Then make sure the text doesn't end with an exclamation mark, comma, period, or dash
                                     // $title = rtrim($title, "!,.-");
                                     // //Finally, we find the last space, eliminate it and put "..."
                                     // $title = substr($title, 0, strrpos($title, ' '));
-                                    echo $title . "..." ?></td>
+                                    // echo $title . "..." 
+                                    echo $item['n_title'] ?></td>
                                 <td><?php echo date("d.m.Y", strtotime($item['n_date'])); ?></td>
                                 <td><?php echo $item['n_category'] ?></td>
                                 <td><?php echo $item['a_name'] ?></td>
@@ -78,8 +81,14 @@
                                     <?php } ?>
                                 </td>
                                 <td>
-                                    <button type="button" class="btn btn-sm btn-outline-info">Detail</button>
-                                    <button type="button" class="btn btn-sm btn-outline-warning">Edit</button>
+                                    <a href="<?php echo base_url('admin_news_detail/' . $item['n_id']); ?>">
+                                        <button type="button" class="btn btn-sm btn-outline-info">Detail</button>
+                                    </a>
+
+                                    <a href="<?php echo base_url('admin_news_update/' . $item['n_id']); ?>">
+                                        <button type="button" class="btn btn-sm btn-outline-warning">Edit</button>
+                                    </a>
+
                                     <a href="<?php echo base_url('admin_news_delete/' . $item['n_id']); ?>">
                                         <button onclick="return confirm('Xəbəri silmək istədiyinizə əminsiniz?')" type="button" class="btn btn-sm btn-outline-danger">Delete</button>
                                     </a>
