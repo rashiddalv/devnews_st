@@ -14,7 +14,8 @@ class News_model extends CI_Model
     {
         return $this->db
             ->order_by('n_id', 'DESC')
-            ->join('admin', 'admin.a_id = news.n_creator_id', 'left')
+            // ->join('admin', 'admin.a_id = news.n_creator_id', 'left')
+            ->join('admin', 'admin.a_id = news.n_updater_id', 'left')
             ->get('news')->result_array();
     }
     public function get_single_news($id)
@@ -24,10 +25,18 @@ class News_model extends CI_Model
             ->join('admin', 'admin.a_id = news.n_creator_id', 'left')
             ->get('news')->row_array();
     }
-    public function update_news($id)
+    public function update_news($id, $data)
     {
-        return $this->db->where('n_id', $id)
-        ->join('admin', 'admin.a_id = news.n_creator_id', 'left')
-        ->get('news')->row_array();
+        return $this->db->where('n_id', $id)->update('news', $data);
+    }
+    public function get_all_categories()
+    {
+        return $this->db->get('category')->result_array();
+    }
+    public function get_all_messages()
+    {
+        return $this->db
+            ->order_by('u_id', 'DESC')
+            ->get('contact')->result_array();
     }
 }

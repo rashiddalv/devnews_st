@@ -56,6 +56,7 @@ $route['index']              = 'UserController/index';
 $route['about_us']           = 'UserController/about_us';
 $route['blog']               = 'UserController/blog';
 $route['contact']            = 'UserController/contact';
+$route['contact_act']        = 'UserController/contact_act';
 $route['category']           = 'UserController/category';
 
 // ====================== User End ==========================================
@@ -72,6 +73,11 @@ $route['log_out']                               = 'AdminController/log_out';
 $route['register_act']                          = 'AdminController/register_act';
 
 $route['admin_dashboard']                       = 'AdminController/dashboard';
+
+
+$route['admin_messages']                        = 'AdminController/all_messages';
+
+
 $route['admin_news']                            = 'AdminController/news';
 $route['admin_news_create']                     = 'AdminController/news_create';
 $route['admin_news_create_act']                 = 'AdminController/news_create_act';
@@ -79,6 +85,9 @@ $route['admin_news_delete/(.*)']                = 'AdminController/news_delete/$
 $route['admin_news_detail/(.*)']                = 'AdminController/news_detail/$1';
 
 $route['admin_news_update/(.*)']                = 'AdminController/news_update/$1';
+$route['admin_news_update_act/(.*)']            = 'AdminController/news_update_act/$1';
+
+$route['admin_news_img_delete/(.*)']            = 'AdminController/delete_news_img/$1';
 
 
 $route['pass_forgot']                           = 'AdminController/pass_forgot';

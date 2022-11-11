@@ -41,6 +41,7 @@
                             <th>Yaradıcının adı</th>
                             <th>Şəkil</th>
                             <th>Vəziyyət</th>
+                            <th>Yenilənib</th>
                             <th>Parametrlər</th>
                         </tr>
                     </thead>
@@ -80,6 +81,16 @@
                                         <span class="badge bg-label-primary me-1">error</span>
                                     <?php } ?>
                                 </td>
+
+                                <td>
+                                    <?php if ($item['n_updater_id']) { ?>
+                                        Yeniləndi
+                                    <?php } else{?>
+                                        ---
+                                    <?php } ?>
+                                        
+                                </td>
+
                                 <td>
                                     <a href="<?php echo base_url('admin_news_detail/' . $item['n_id']); ?>">
                                         <button type="button" class="btn btn-sm btn-outline-info">Detail</button>

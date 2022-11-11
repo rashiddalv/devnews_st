@@ -166,6 +166,7 @@ class AdminController extends CI_Controller
     //=======================Forgot Password=======================
 
 
+
     // ================================NEWS STARTS========================================
     public function news()
     {
@@ -177,6 +178,7 @@ class AdminController extends CI_Controller
     public function news_create()
     {
         $data['admin'] = $this->db->where('a_id', $_SESSION['admin_login_id'])->get('admin')->row_array();
+        $data['get_all_categories'] = $this->News_model->get_all_categories();
         $this->load->view('admin/news/create', $data);
     }
     public function news_create_act()
@@ -290,10 +292,81 @@ class AdminController extends CI_Controller
     public function news_update($id)
     {
         $data['admin'] = $this->db->where('a_id', $_SESSION['admin_login_id'])->get('admin')->row_array();
-        $data['update_news'] = $this->News_model->update_news($id);
-        // print_r('<pre>');
-        // print_r($data['update_news']);
-        // die();
+        $data['get_all_categories'] = $this->News_model->get_all_categories();
+        $data['get_single_data'] = $this->db->where('n_id', $id)->get('news')->row_array();
         $this->load->view('admin/news/update', $data);
+    }
+    public function news_update_act($id)
+    {
+        $title          = $_POST['title'];
+        $description    = $_POST['description'];
+        $date           = $_POST['date'];
+        $category       = $_POST['category'];
+        $status         = $_POST['status'];
+
+        if (!empty($title) && !empty($description) && !empty($date) && !empty($category) && !empty($status)) {
+
+            $config['upload_path']          = './uploads/news/';
+            $config['allowed_types']        = 'jpg|png|jpeg';
+            $config['encrypt_name']         = TRUE;
+
+            $this->load->library('upload', $config);
+            $this->upload->initialize($config);
+
+            if ($this->upload->do_upload('user_img')) {
+                $file_name = $this->upload->data('file_name');
+                $file_ext = $this->upload->data('file_ext');
+
+                $data = [
+                    'n_title'       => $title,
+                    'n_description' => $description,
+                    'n_date'        => $date,
+                    'n_category'    => $category,
+                    'n_status'      => $status,
+                    'n_img'         => $file_name,
+                    'n_file_ext'    => $file_ext,
+                    'n_updater_id'  => $_SESSION['admin_login_id'],
+                    'n_update_date' => date("Y-m-d H:i:s")
+                ];
+
+                $this->News_model->update_news($id, $data);
+                $this->session->set_flashdata('success', "Xəbər uğurla yeniləndi!");
+                redirect(base_url('admin_news'));
+            } else {
+
+                $data = [
+                    'n_title'       => $title,
+                    'n_description' => $description,
+                    'n_date'        => $date,
+                    'n_category'    => $category,
+                    'n_status'      => $status,
+                    'n_updater_id'  => $_SESSION['admin_login_id'],
+                    'n_update_date' => date("Y-m-d H:i:s")
+                ];
+
+                $this->News_model->update_news($id, $data);
+                $this->session->set_flashdata('success', "Xəbər uğurla yeniləndi!");
+                redirect(base_url('admin_news'));
+            }
+        } else {
+            $this->session->set_flashdata('err', "Boşluq buraxmayın!");
+            redirect($_SERVER['HTTP_REFERER']);
+        }
+    }
+    public function delete_news_img($id)
+    {
+        $data = [
+            'n_img' => "",
+            'n_file_ext' => "",
+        ];
+        $this->News_model->update_news($id, $data);
+        $this->session->set_flashdata('success', "Şəkil uğurla silindi!");
+        redirect($_SERVER['HTTP_REFERER']);
+    }
+    public function all_messages()
+    {
+        $data['admin'] = $this->db->where('a_id', $_SESSION['admin_login_id'])->get('admin')->row_array();
+        $data['get_all_messages'] = $this->News_model->get_all_messages();
+        $this->load->view('admin/messages/all_messages', $data);
     }
 }
